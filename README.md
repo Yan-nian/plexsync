@@ -1,5 +1,8 @@
 # Plex-Trakt Sync
 
+![Docker Build](https://github.com/Yan-nian/plexsync/actions/workflows/docker-build.yml/badge.svg)
+![License](https://img.shields.io/github/license/Yan-nian/plexsync)
+
 自动将 Trakt 观看历史同步到 Plex，带 Web Dashboard 监控界面。
 
 ## 特性
@@ -11,6 +14,37 @@
 - 🐳 **Docker 部署**: 一键启动，容器化运行
 
 ## 快速开始
+
+### 方式 1: 使用预构建镜像（推荐）
+
+```bash
+# 创建配置文件
+mkdir plexsync && cd plexsync
+curl -O https://raw.githubusercontent.com/Yan-nian/plexsync/main/.env.example
+mv .env.example .env
+nano .env  # 编辑填入你的凭据
+
+# 创建 docker-compose.yml
+curl -O https://raw.githubusercontent.com/Yan-nian/plexsync/main/docker-compose.yml
+
+# 使用预构建镜像（无需构建）
+sed -i '' 's/build: \./image: ghcr.io\/yan-nian\/plexsync:latest/' docker-compose.yml
+
+# 启动
+docker-compose up -d
+```
+
+### 方式 2: 从源码构建
+
+```bash
+git clone https://github.com/Yan-nian/plexsync.git
+cd plexsync
+cp .env.example .env
+nano .env  # 编辑填入你的凭据
+
+# 构建并启动
+docker-compose up -d
+```
 
 ### 1. 配置
 

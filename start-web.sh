@@ -1,73 +1,41 @@
 #!/usr/bin/env bash
-
-# Quick Web Dashboard Start Script
 set -e
 
-# Colors
-GREEN='\033[0;32m'
-BLUE='\033[0;34m'
-YELLOW='\033[1;33m'
-NC='\033[0m'
-
-echo -e "${BLUE}================================${NC}"
-echo -e "${BLUE}Plex-Trakt Sync - Web Dashboard${NC}"
-echo -e "${BLUE}================================${NC}"
+echo "================================"
+echo "Plex-Trakt Sync"
+echo "================================"
 echo ""
 
-# Check if .env exists
+# 检查 .env 文件
 if [ ! -f .env ]; then
-    echo -e "${YELLOW}⚠ No .env file found. Creating from template...${NC}"
+    echo "⚠️  创建 .env 文件..."
     cp .env.example .env
-    echo -e "${GREEN}✓ Created .env file${NC}"
-    echo -e "${YELLOW}⚠ Please edit .env with your credentials before continuing${NC}"
+    echo "✓ 已创建 .env"
+    echo "⚠️  请编辑 .env 填入你的凭据"
     echo ""
-    read -p "Press Enter when ready..."
+    read -p "按 Enter 继续..."
 fi
 
-# Enable web mode in .env if not already set
-if ! grep -q "WEB_MODE=True" .env; then
-    echo -e "${BLUE}Enabling Web Mode...${NC}"
-    if grep -q "WEB_MODE=" .env; then
-        sed -i.bak 's/WEB_MODE=.*/WEB_MODE=True/' .env
-    else
-        echo "WEB_MODE=True" >> .env
-    fi
-    echo -e "${GREEN}✓ Web Mode enabled${NC}"
-fi
-
-# Start container
-echo ""
-echo -e "${BLUE}Starting Docker container...${NC}"
-docker-compose -f docker-compose.web.yml up -d
+# 启动容器
+echo "启动容器..."
+docker-compose up -d
 
 echo ""
-echo -e "${GREEN}✓ Container started successfully!${NC}"
+echo "✓ 启动成功!"
 echo ""
-echo -e "${BLUE}Web Dashboard: ${GREEN}http://localhost:5000${NC}"
+echo "Web Dashboard: http://localhost:5000"
 echo ""
-echo "Useful commands:"
-echo "  View logs:    docker-compose -f docker-compose.web.yml logs -f"
-echo "  Stop:         docker-compose -f docker-compose.web.yml down"
-echo "  Restart:      docker-compose -f docker-compose.web.yml restart"
+echo "常用命令:"
+echo "  查看日志: docker-compose logs -f"
+echo "  停止:     docker-compose down"
+echo "  重启:     docker-compose restart"
 echo ""
 
-# Try to open browser
+# 尝试打开浏览器
 if command -v open >/dev/null 2>&1; then
-    read -p "Open dashboard in browser? (Y/n): " -n 1 -r
-    echo
-    if [[ ! $REPLY =~ ^[Nn]$ ]]; then
-        sleep 2
-        open http://localhost:5000
-    fi
+    sleep 2
+    open http://localhost:5000 2>/dev/null || true
 elif command -v xdg-open >/dev/null 2>&1; then
-    read -p "Open dashboard in browser? (Y/n): " -n 1 -r
-    echo
-    if [[ ! $REPLY =~ ^[Nn]$ ]]; then
-        sleep 2
-        xdg-open http://localhost:5000
-    fi
+    sleep 2
+    xdg-open http://localhost:5000 2>/dev/null || true
 fi
-
-echo -e "${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
-echo -e "${GREEN}Setup complete! Enjoy your sync dashboard! 🎉${NC}"
-echo -e "${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"

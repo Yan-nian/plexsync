@@ -12,12 +12,15 @@ from pathlib import Path
 from typing import Optional, Dict, Any
 import logging
 
-import trakt
-import trakt.core
-from trakt.core import AUTH_METHOD
-
-
 logger = logging.getLogger(__name__)
+
+try:
+    import trakt.core
+    from trakt import users
+except ImportError as e:
+    logger.error(f"Failed to import trakt library: {e}")
+    logger.error("Please install: pip install trakt.py")
+    raise
 
 
 class TraktAuth:
@@ -45,8 +48,8 @@ class TraktAuth:
         # Ensure config directory exists
         self.config_dir.mkdir(parents=True, exist_ok=True)
         
-        # Configure trakt.py
-        trakt.core.AUTH_METHOD = AUTH_METHOD.DEVICE
+        # Configure trakt.py for device authentication
+        trakt.core.AUTH_METHOD = trakt.core.DEVICE
         
     def authenticate(self) -> bool:
         """

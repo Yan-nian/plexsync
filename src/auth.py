@@ -14,13 +14,9 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-try:
-    import trakt.core
-    from trakt import users
-except ImportError as e:
-    logger.error(f"Failed to import trakt library: {e}")
-    logger.error("Please install: pip install trakt.py")
-    raise
+# trakt.py 库导入
+import trakt.core
+import trakt.users
 
 
 class TraktAuth:
@@ -117,8 +113,7 @@ class TraktAuth:
         """Verify if current token is valid."""
         try:
             # Try a simple API call to verify token
-            from trakt.users import User
-            user = User('me')
+            user = trakt.users.User('me')
             _ = user.username
             return True
         except Exception as e:
@@ -130,9 +125,7 @@ class TraktAuth:
         try:
             # trakt.py should handle refresh automatically
             # but we'll trigger it explicitly
-            from trakt.core import oauth_refresh
-            
-            new_token = oauth_refresh()
+            new_token = trakt.core.oauth_refresh()
             if new_token:
                 token_data = {
                     'access_token': trakt.core.OAUTH_TOKEN,
@@ -166,8 +159,7 @@ class TraktAuth:
             trakt.core.CLIENT_SECRET = self.client_secret
             
             # Get device code
-            from trakt.core import get_device_code
-            code_data = get_device_code()
+            code_data = trakt.core.get_device_code()
             
             if not code_data:
                 logger.error("Failed to get device code")
@@ -190,12 +182,11 @@ class TraktAuth:
             logger.info("=" * 60)
             
             # Poll for authorization
-            from trakt.core import get_device_token
             start_time = time.time()
             
             while time.time() - start_time < expires_in:
                 try:
-                    token_data = get_device_token(device_code)
+                    token_data = trakt.core.get_device_token(device_code)
                     
                     if token_data:
                         # Successfully authorized

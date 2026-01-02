@@ -107,6 +107,22 @@ LOG_LEVEL=INFO            # DEBUG/INFO/WARNING/ERROR
 PLEX_LIBRARIES=           # 留空=全部，或指定: "Movies,TV Shows"
 ```
 
+## Docker 镜像
+
+### 自动构建
+
+每次推送到 `main` 分支，GitHub Actions 会自动构建并推送 Docker 镜像到 GitHub Container Registry。
+
+镜像地址: `ghcr.io/yan-nian/plexsync:latest`
+
+支持架构:
+- `linux/amd64` (x86_64)
+- `linux/arm64` (ARM64, 如 Apple Silicon, Raspberry Pi)
+
+### 查看构建状态
+
+访问: https://github.com/Yan-nian/plexsync/actions
+
 ## 常用命令
 
 ```bash

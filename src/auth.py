@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 
 # trakt.py 库导入
 import trakt.core
-import trakt.users
+from trakt.users import User
 
 
 class TraktAuth:
@@ -113,7 +113,7 @@ class TraktAuth:
         """Verify if current token is valid."""
         try:
             # Try a simple API call to verify token
-            user = trakt.users.User('me')
+            user = User('me')
             _ = user.username
             return True
         except Exception as e:

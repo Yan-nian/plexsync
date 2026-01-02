@@ -1,0 +1,22 @@
+# Plex API Client
+PlexAPI==4.15.6
+
+# Trakt API Client
+trakt.py==4.4.0
+
+# HTTP Client (for robust requests)
+requests==2.31.0
+
+# Scheduling
+schedule==1.2.0
+
+# Environment Variables
+python-dotenv==1.0.0
+
+# Web Dashboard
+Flask==3.0.0
+flask-cors==4.0.0
+
+# Type Checking (development)
+mypy==1.7.1
+types-requests==2.31.0.10
